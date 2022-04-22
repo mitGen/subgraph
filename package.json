@@ -1,0 +1,35 @@
+{
+  "name": "subgraph",
+  "description": "project subgraphs",
+  "version": "1.0.0",
+  "private": true,
+  "license": "ISC",
+  "author": "Gennady Mitin",
+  "scripts": {
+    "auth": "graph auth --product hosted-service",
+    "codegen": "graph codegen subgraph.yaml",
+    "deploy-dev": "graph deploy --product hosted-service --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ mitgena/marketplace subgraph.yaml",
+    "build": "graph build subgraph.yaml",
+    "format:check": "prettier --check '*/**/*.{js,ts}'",
+    "format:write": "prettier --write '*/**/*.{js,ts}'",
+    "lint": "eslint '*/**/*.{js,ts}'",
+    "prepare": "husky install"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^13.1.0",
+    "@commitlint/config-conventional": "^13.1.0",
+    "@graphprotocol/graph-cli": "0.26.0",
+    "@graphprotocol/graph-ts": "0.26.0",
+    "@typescript-eslint/eslint-plugin": "^4.31.0",
+    "@typescript-eslint/parser": "^4.31.0",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "husky": "^7.0.0",
+    "prettier": "^2.4.0",
+    "typescript": "^4.3.5"
+  },
+  "dependencies": {
+    "js-sha3": "^0.8.0",
+    "sha3": "^2.1.4"
+  }
+}

@@ -1,0 +1,43 @@
+specVersion: 0.0.2
+schema:
+  file: schema.graphql
+dataSources:
+  - kind: ethereum
+    name: Marketplace
+    network: chapel
+    source:
+      address: "0xD7266EdA74e5419aea7a6910A4f7CF0729EA8bb5"
+      abi: Marketplace
+      startBlock: 18444347
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - Collection
+        - NFT
+        - User
+        - Order
+        - OrderDetails
+        - PaymentToken
+      abis:
+        - name: Marketplace
+          file: Marketplace/abis/Marketplace.json
+        - name: IERC721Metadata
+          file: Marketplace/abis/IERC721Metadata.json
+        - name: IERC20Metadata
+          file: Marketplace/abis/IERC20Metadata.json
+        - name: LexitCollection
+          file: Marketplace/abis/LexitCollection.json
+      eventHandlers:
+        - event: CreateOrder((address,address,address,uint256,address,uint256,uint256,uint256,uint256))
+          handler: handleCreateOrder
+        - event: CancelOrder((address,address,address,uint256,address,uint256,uint256,uint256,uint256))
+          handler: handleCancelOrder
+        - event: ExecuteOrder((address,address,address,uint256,address,uint256,uint256,uint256,uint256))
+          handler: handleExecuteOrder
+        - event: Mint(indexed uint256,string,address,uint256)
+          handler: handleMint
+        - event: MintBatch(uint256[],string[],address,uint256)
+          handler: handleMintBatch
+      file: Marketplace/Marketplace.wasm

@@ -1,0 +1,211 @@
+enum OrderStatus {
+  OPEN
+  EXECUTED
+  CANCELLED
+}
+
+type Collection @entity {
+  "ID (address)"
+  id: ID!
+
+  "Name collection"
+  name: String!
+
+  "Symbol collection"
+  symbol: String!
+
+  "Total of Trades"
+  totalTrades: BigInt!
+
+  "Number tokens listed"
+  numberTokensListed: BigInt!
+
+  "List of NFTs"
+  nfts: [NFT!]! @derivedFrom(field: "collection")
+}
+
+type NFT @entity {
+  "CollectionAddress + tokenId"
+  id: ID!
+
+  "Collection data"
+  collection: Collection!
+
+  "tokenId"
+  tokenId: BigInt!
+
+  "CID"
+  cid: String!
+
+  "Metadata url"
+  metadataUrl: String!
+
+  "Creator address"
+  creatorAddress: Bytes!
+
+  "Royalty fee receiver"
+  royaltyReceiver: Bytes!
+
+  "Royalty fraction"
+  royaltyFraction: BigInt!
+
+  "Number of unique trades"
+  totalTrades: BigInt!
+
+  "Transaction history"
+  transactionHistory: [Transaction!]! @derivedFrom(field: "nft")
+
+  "Asks history"
+  asks: [OrderDetails!]! @derivedFrom(field: "nft")
+
+  "Bids history"
+  bids: [OrderDetails!]! @derivedFrom(field: "nft")
+}
+
+type User @entity {
+  "User address"
+  id: ID!
+
+  "Number of tokens currently listed"
+  numberTokensListed: BigInt!
+
+  "Number of tokens purchased"
+  numberTokensPurchased: BigInt!
+
+  "Number of tokens sold"
+  numberTokensSold: BigInt!
+
+  "Transactions buy"
+  buyTradeHistory: [Transaction!]! @derivedFrom(field: "buyer")
+
+  "Transactions sold"
+  sellTradeHistory: [Transaction!]! @derivedFrom(field: "seller")
+
+  "Ask order history"
+  askOrderHistory: [OrderDetails!]! @derivedFrom(field: "seller")
+
+  "Ask order history"
+  bidOrderHistory: [OrderDetails!]! @derivedFrom(field: "buyer")
+}
+
+type Order @entity {
+  "Hash transaction"
+  id: ID!
+
+  "Seller address"
+  seller: Bytes!
+
+  "Buyer address"
+  buyer: Bytes!
+
+  "Nft token address"
+  nft: Bytes!
+
+  "Nft identifier"
+  nftId: BigInt!
+
+  "Payment token address"
+  token: Bytes!
+
+  "Price for nft"
+  price: BigInt!
+
+  "Start timestamp sale"
+  start: BigInt!
+
+  "End timestamp sale"
+  end: BigInt!
+
+  "Salt"
+  salt: BigInt!
+
+  "Ask order data"
+  askOrder: [OrderDetails!]! @derivedFrom(field: "ask")
+
+  "Bid order data"
+  bidOrder: [OrderDetails!]! @derivedFrom(field: "bid")
+}
+
+type OrderDetails @entity {
+  "Hash order"
+  id: ID!
+
+  "NFT data"
+  nft: NFT!
+
+  "Is ask order or bid"
+  isAskOrder: Boolean!
+
+  "Ask order data"
+  ask: Order!
+
+  "Bid order data"
+  bid: Order!
+
+  "Order data"
+  order: Order!
+
+  "Seller"
+  seller: User!
+
+  "Buyer"
+  buyer: User!
+
+  "Payment token details"
+  paynmentTokenDetails: PaymentToken!
+
+  "Block number"
+  block: BigInt!
+
+  "Timestamp"
+  timestamp: BigInt!
+
+  "Price without decimals"
+  priceWithoutDecimals: BigDecimal!
+
+  "Status order"
+  status: OrderStatus!
+}
+
+type PaymentToken @entity {
+  "Payment token address"
+  id: ID!
+
+  "name token"
+  name: String!
+
+  "symbol token"
+  symbol: String!
+
+  "Decimals token"
+  decimals: Int!
+
+  "Transaction data"
+  transaction: [Transaction!]! @derivedFrom(field: "paymentToken")
+}
+
+type Transaction @entity {
+  "Hash transaction"
+  id: ID!
+
+  "Collection"
+  collection: Collection!
+
+  "Nft token data"
+  nft: NFT!
+
+  "Payment token data"
+  paymentToken: PaymentToken!
+
+  "Buyer"
+  buyer: User!
+
+  "Seller"
+  seller: User!
+
+  "Block number"
+  block: BigInt!
+
+  "Timestamp"
+  timestamp: Int!
+}
