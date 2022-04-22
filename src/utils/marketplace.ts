@@ -1,5 +1,5 @@
 import { ethereum, crypto } from "@graphprotocol/graph-ts";
-import { MARKETPLACE_ADDRESS, ZERO_ADDRESS } from "./constants";
+import { MARKETPLACE_ADDRESS, ONE_BI, ZERO_ADDRESS } from "./constants";
 import { Marketplace, Marketplace__getOrderHashInputOrderStruct } from "../../generated/Marketplace/Marketplace";
 
 export function fetchOrderHash<T extends Marketplace__getOrderHashInputOrderStruct>(order: T): string {
@@ -20,20 +20,7 @@ export function fetchOrderHash<T extends Marketplace__getOrderHashInputOrderStru
   // ];
 
   // let marketplaceStruct = new Marketplace__getOrderHashInputOrderStruct(
-  //   [
-  //     ethereum.Value.fromAddress(order.seller),
-  //     ethereum.Value.fromAddress(order.buyer),
-  //     ethereum.Value.fromAddress(order.nft),
-  //     ethereum.Value.fromUnsignedBigInt(order.nftId),
-  //     ethereum.Value.fromAddress(order.token),
-  //     ethereum.Value.fromUnsignedBigInt(order.price),
-  //     ethereum.Value.fromUnsignedBigInt(order.start),
-  //     ethereum.Value.fromUnsignedBigInt(order.end),
-  //     ethereum.Value.fromUnsignedBigInt(order.salt)
-  //   ]
-  // )
-
-  let hash = contract.try_getOrderHash([
+  let obj = [
     ethereum.Value.fromAddress(order.seller),
     ethereum.Value.fromAddress(order.buyer),
     ethereum.Value.fromAddress(order.nft),
@@ -43,7 +30,22 @@ export function fetchOrderHash<T extends Marketplace__getOrderHashInputOrderStru
     ethereum.Value.fromUnsignedBigInt(order.start),
     ethereum.Value.fromUnsignedBigInt(order.end),
     ethereum.Value.fromUnsignedBigInt(order.salt),
-  ] as Marketplace__getOrderHashInputOrderStruct);
+  ];
+  // )
+
+  let marketplaceStruct = new Marketplace__getOrderHashInputOrderStruct(
+    ethereum.Value.fromAddress(order.seller),
+    ethereum.Value.fromAddress(order.buyer),
+    ethereum.Value.fromAddress(order.nft),
+    ethereum.Value.fromUnsignedBigInt(order.nftId),
+    ethereum.Value.fromAddress(order.token),
+    ethereum.Value.fromUnsignedBigInt(order.price),
+    ethereum.Value.fromUnsignedBigInt(order.start),
+    ethereum.Value.fromUnsignedBigInt(order.end),
+    ethereum.Value.fromUnsignedBigInt(order.salt)
+  ); //ethereum.Value.fromI32(10))
+
+  let hash = contract.try_getOrderHash(...obj);
 
   if (hash.reverted) {
     return "unknown";
