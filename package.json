@@ -8,8 +8,8 @@
   "scripts": {
     "auth": "graph auth --product hosted-service",
     "codegen": "graph codegen subgraph.yaml",
-    "deploy-dev": "graph deploy --product hosted-service --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ mitgena/marketplace subgraph.yaml",
     "build": "graph build subgraph.yaml",
+    "deploy-dev": "graph deploy --product hosted-service --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ mitgena/marketplace subgraph.yaml",
     "format:check": "prettier --check '*/**/*.{js,ts}'",
     "format:write": "prettier --write '*/**/*.{js,ts}'",
     "lint": "eslint '*/**/*.{js,ts}'",

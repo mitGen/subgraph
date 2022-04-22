@@ -45,7 +45,7 @@ export function fetchOrderHash<T extends Marketplace__getOrderHashInputOrderStru
     ethereum.Value.fromUnsignedBigInt(order.salt)
   ); //ethereum.Value.fromI32(10))
 
-  let hash = contract.try_getOrderHash(...obj);
+  let hash = contract.try_getOrderHash(..);
 
   if (hash.reverted) {
     return "unknown";
